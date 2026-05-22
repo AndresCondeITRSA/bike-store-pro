@@ -14,6 +14,7 @@ export default function RegisterPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
+    console.log({registerformData:formData});
     const result = await registerAction(formData);
 
     if (result?.error) {

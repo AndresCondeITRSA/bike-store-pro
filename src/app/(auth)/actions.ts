@@ -4,6 +4,7 @@ import { getSupabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { pipe, validateRequired, sanitizeStrings } from "@/lib/pipeline";
 
+
 export async function loginAction(formData: FormData) {
   const raw = {
     email: formData.get("email") as string,
@@ -14,7 +15,7 @@ export async function loginAction(formData: FormData) {
     .through(validateRequired(["email", "password"]))
     .through(sanitizeStrings(["email"]))
     .execute();
-
+    console.log({result});
   if (!result.success) {
     return { error: result.error };
   }
@@ -38,6 +39,8 @@ export async function registerAction(formData: FormData) {
     password: formData.get("password") as string,
     fullName: formData.get("fullName") as string,
   };
+
+  console.log(raw);
 
   const result = await pipe(raw)
     .through(validateRequired(["email", "password", "fullName"]))

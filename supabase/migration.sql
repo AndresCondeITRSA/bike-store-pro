@@ -103,15 +103,19 @@ create table public.favorites (
 -- Profiles: users can read own, admins can read all
 alter table public.profiles enable row level security;
 
+-- Helper function to check admin without triggering RLS recursion
+create or replace function public.is_admin()
+returns boolean as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
+$$ language sql security definer;
+
 create policy "Users can view own profile"
   on public.profiles for select
   using (auth.uid() = id);
 
 create policy "Admins can view all profiles"
   on public.profiles for select
-  using (
-    exists (select 1 from public.profiles where id = auth.uid() and role = 'admin')
-  );
+  using (public.is_admin());
 
 create policy "Users can update own profile"
   on public.profiles for update

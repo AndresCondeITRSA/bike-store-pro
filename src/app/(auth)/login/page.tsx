@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginAction } from "../actions";
+import { getSupabaseBrowser } from "@/lib/supabase/client";
 import { Suspense } from "react";
 
 function LoginForm() {
@@ -19,10 +19,17 @@ function LoginForm() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const result = await loginAction(formData);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    if (result?.error) {
-      setError(result.error);
+    const supabase = getSupabaseBrowser();
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setError(authError.message);
       setLoading(false);
     } else {
       router.push("/");

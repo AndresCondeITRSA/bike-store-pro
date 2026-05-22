@@ -5,9 +5,10 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { signOutAction } from "@/app/(auth)/actions";
 
+
 export default function Header() {
-  const { user, loading } = useAuth();
-  const { totalItems } = useCart();
+    const { user, loading } = useAuth();
+    const { totalItems } = useCart();
 
   return (
     <header className="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
