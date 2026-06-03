@@ -2,6 +2,7 @@
 
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { pipe, validateRequired, sanitizeStrings } from "@/lib/pipeline";
 
 
@@ -52,11 +53,15 @@ export async function registerAction(formData: FormData) {
   }
 
   const supabase = await getSupabaseServer();
+  const headersList = await headers();
+  const origin = headersList.get("origin") ?? "";
+
   const { error } = await supabase.auth.signUp({
     email: result.data.email as string,
     password: result.data.password as string,
     options: {
       data: { full_name: result.data.fullName as string },
+      emailRedirectTo: `${origin}/auth/callback`,
     },
   });
 

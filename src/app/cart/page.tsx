@@ -50,6 +50,17 @@ export default function CartPage() {
       return;
     }
 
+    // Confirm the order
+    await supabase
+      .from("orders")
+      .update({ status: "confirmed" })
+      .eq("id", order.id);
+
+    // Send confirmation email via Edge Function (fire-and-forget)
+    supabase.functions.invoke("send-order-confirmation", {
+      body: { order_id: order.id, user_id: user.id },
+    });
+
     clearCart();
     router.push("/orders");
   };

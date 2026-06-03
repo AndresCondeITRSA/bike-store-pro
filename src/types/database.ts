@@ -36,6 +36,7 @@ export interface Database {
           image_url: string;
           category: "mountain" | "road" | "urban" | "electric";
           in_stock: boolean;
+          stock: number;
           frame: string;
           wheels: string;
           gears: string;
@@ -51,6 +52,7 @@ export interface Database {
           image_url: string;
           category: "mountain" | "road" | "urban" | "electric";
           in_stock?: boolean;
+          stock?: number;
           frame: string;
           wheels: string;
           gears: string;
@@ -66,6 +68,7 @@ export interface Database {
           image_url?: string;
           category?: "mountain" | "road" | "urban" | "electric";
           in_stock?: boolean;
+          stock?: number;
           frame?: string;
           wheels?: string;
           gears?: string;
